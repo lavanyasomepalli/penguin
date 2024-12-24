@@ -3,19 +3,13 @@ import numpy as np
 import pandas as pd
 import joblib
 import pickle
-
-
 app = Flask(__name__)
-
 model = joblib.load('classifier.pkl')
 onehot = joblib.load('OneHotee.joblib')
-
-
 @app.route('/')
 @app.route('/main')
 def main():
 	return render_template('main.html')
-
 @app.route('/predict',methods=['POST'])
 def predict():
 	int_features =[[x for x in request.form.values()]]
@@ -31,16 +25,10 @@ def predict():
 	l2 = df.iloc[:,2:]
 	final =pd.concat([l2,t],axis=1)
 	print("$"*30)
-
 	print(final)
 	result = model.predict(final)
 	print("The Result is :",result)
-
-
 	print(int_features)
-
 	return render_template("main.html",prediction_text="Penguin Specie is : {}".format(result))
-
-
 if __name__ == "__main__":
-	app.run(host='0.0.0.0', port=7000, debug=True)
+	app.run( debug=True,host='0.0.0.0', port=7000)
